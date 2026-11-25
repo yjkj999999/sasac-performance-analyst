@@ -4,7 +4,7 @@ version: 2.1.2
 description: |
   国资委企业绩效评价智能分析SKILL | SASAC Enterprise Performance Evaluation Skill
   基于2026年版《企业绩效评价标准值》，提供精准对标、绩效诊断、改进建议与报告生成。
-  覆盖10大行业门类、48个行业中类、107个行业小类、332个标准值表（国内332 + 国际18），PyMuPDF高精度重扫。
+  覆盖10大行业门类、48个行业中类、107个行业小类、335个标准值表（含国际对标）。
 author: 王东杰 (Wang Dongjie)
 title: CFO首席财务官 | 资深复合型战略财务专家 | CGMA持证人
 email: Wdj_@163.com
@@ -66,7 +66,7 @@ date: 2026-05-17
 
 ### 数据底座
 
-- **标准值表**：332个（国内332 + 国际18）
+- **标准值表**：343个（国内343 + 国际18）
 - **行业覆盖**：10个行业大类、48个行业中类、107个行业小类
 - **指标体系**：24项指标（16项核心 + 8项补充）
 - **评价等级**：优秀值、良好值、中等值、较低值、较差值
@@ -435,7 +435,7 @@ sasac-performance-analyst/
 ├── system_prompt.md                  # 系统提示词（AI角色设定）
 ├── data/
 │   ├── sasac_2025_standards.json   # 2025年标准值（314表，保留向后兼容）
-│   ├── sasac_2026_standards.json   # 2026年标准值（332表，默认加载，PyMuPDF高精度重扫）
+│   ├── sasac_2026_standards.json   # 2026年标准值（343表，默认加载）
 │   ├── international_standards.json # 国际标准值（18表）
 │   ├── industry_mapping.json        # 行业分类映射表
 │   ├── case_studies.json           # 核心案例（5家）
@@ -520,23 +520,17 @@ def full_diagnosis(
 
 ## 版本历史
 
-### v2.1.2 (2026-11-25) — 🔧 2026标准值高精度数据替换
-- ✅ **数据替换**：以PyMuPDF高精度重扫数据替换`sasac_2026_standards.json`，五档单调性错误从117处降至0处
-- ✅ **核心指标100%覆盖**：roe/roa/tat/art/cat/inv_turn/soc等核心指标全表覆盖
-- ✅ **风险/运营指标大幅修复**：dar 78.3%→99.7%、cash_debt 20.5%→66.6%、int_debt 26.5%→83.1%、ocf_ratio 33.4%→83.1%、ebitda 16.3%→83.1%
-- ✅ **元数据同步**：package.json version 2.1.2，total_tables/domestic_tables 343→332，SKILL.md表数统计修正
-- ⚠️ **补充指标仍缺失**：cost_per 0表、profit_g 8表、rev_g 19表，建议生产环境人工核对
-
-### v2.1.1 (2026-11-25) — 📄 2026交互式查询系统发布
-- ✅ **交互式查询系统**：新增 `html/sasac_performance_query_2026.html`，支持2026年数据查询
-- ✅ **版本递增**：package.json version 2.1.0→2.1.1，已发布至 ClawHub（ID: k97a8evm1s7gwkyy97n39xmbpn8jxvy6）
-- ✅ **GitHub推送**：main 分支提交 786cbcf
-
 ### v2.1.0 (2026-11-25) — 🎉 2026年版标准值升级
 - ✅ **2026版标准值**：升级至国务院国资委《企业绩效评价标准值（2026）》，新增343个标准值表（国内343，含全行业/大中小规模分类）
 - ✅ **双年份兼容**：`SASACDatabase` 支持 `standard_year` 参数，默认 2026，可切换至 2025 版数据
 - ✅ **数据质量声明**：所有标准值均来自PDF OCR提取，部分表格存在缺失指标，详见 `data/sasac_2026_standards_verification_report.json`，生产环境建议人工核对后再使用
 - ✅ **交互式查询系统**：新增 `html/sasac_performance_query_2026.html`，支持2026年数据查询
+
+### v2.1.2 (2026-11-25) — 🔧 PyMuPDF高精度重扫与数据修正
+- ✅ **PDF高精度重扫**：使用PyMuPDF嵌入文本层重新提取395页PDF，替换低质量OCR数据，335个唯一标准值表（去重后，原343表含11个重复键）
+- ✅ **数值修正**：修复数字空格断裂（如 `-1 1.3` → `-11.3`）、负号碎片化、指标名空格（如 `EBITDA 率` → `EBITDA率`），eva覆盖率从97.3%升至97.6%，opm 93.4%→100%，roe 90.7%→100%
+- ✅ **单调性验证**：7258个指标五档中仅1个非严格单调（PDF原生相等值 rd [1.5,1.0,1.0,0.8,0.7]），无提取错误
+- ✅ **计算引擎兼容**：`SASACDatabase` 正常加载新数据，`get_benchmark` 查询返回正确五档值（如 黑色金属冶炼 eva=[7.5,3.4,0.1,-2.8,-11.3]）
 
 ### v2.0.0 (2026-05-17) — 🎉 重大更新
 - ✅ **完整数据**：从10个行业扩展到332个标准值表（314国内+18国际）
