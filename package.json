@@ -1,6 +1,6 @@
 {
   "name": "sasac-performance-analyst",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "国资委企业绩效评价智能分析SKILL | SASAC Enterprise Performance Evaluation Skill - 基于2026年版标准值，覆盖343个标准值表（343国内+18国际），提供精准对标、绩效诊断、改进建议与报告生成",
   "author": "王东杰 (Wang Dongjie)",
   "creator": {
