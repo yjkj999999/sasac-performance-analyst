@@ -1,6 +1,6 @@
 ---
 name: sasac-performance-analyst
-version: 2.1.2
+version: 2.1.3
 description: |
   国资委企业绩效评价智能分析SKILL | SASAC Enterprise Performance Evaluation Skill
   基于2026年版《企业绩效评价标准值》，提供精准对标、绩效诊断、改进建议与报告生成。
@@ -526,7 +526,7 @@ def full_diagnosis(
 - ✅ **数据质量声明**：所有标准值均来自PDF OCR提取，部分表格存在缺失指标，详见 `data/sasac_2026_standards_verification_report.json`，生产环境建议人工核对后再使用
 - ✅ **交互式查询系统**：新增 `html/sasac_performance_query_2026.html`，支持2026年数据查询
 
-### v2.1.2 (2026-11-25) — 🔧 PyMuPDF高精度重扫与数据修正
+### v2.1.3 (2026-11-25) — 🔧 PyMuPDF高精度重扫与数据修正
 - ✅ **PDF高精度重扫**：使用PyMuPDF嵌入文本层重新提取395页PDF，替换低质量OCR数据，335个唯一标准值表（去重后，原343表含11个重复键）
 - ✅ **数值修正**：修复数字空格断裂（如 `-1 1.3` → `-11.3`）、负号碎片化、指标名空格（如 `EBITDA 率` → `EBITDA率`），eva覆盖率从97.3%升至97.6%，opm 93.4%→100%，roe 90.7%→100%
 - ✅ **单调性验证**：7258个指标五档中仅1个非严格单调（PDF原生相等值 rd [1.5,1.0,1.0,0.8,0.7]），无提取错误
